@@ -1,0 +1,32 @@
+{
+  "gallery": [
+    {
+      "id": "baby-1",
+      "title": "Baby Photography",
+      "category": "Baby",
+      "image_url": "/portfolio/baby/",
+      "storage_path": "public/portfolio/baby"
+    },
+    {
+      "id": "bridal-1",
+      "title": "Bridal Collection",
+      "category": "Bridal",
+      "image_url": "/portfolio/bridal/",
+      "storage_path": "public/portfolio/bridal"
+    },
+    {
+      "id": "pre-wedding-1",
+      "title": "Pre-Wedding Shoots",
+      "category": "Pre-Wedding",
+      "image_url": "/portfolio/pre-wedding/",
+      "storage_path": "public/portfolio/pre-wedding"
+    },
+    {
+      "id": "wedding-1",
+      "title": "Wedding Photography",
+      "category": "Weddings",
+      "image_url": "/portfolio/wedding/",
+      "storage_path": "public/portfolio/wedding"
+    }
+  ]
+}
