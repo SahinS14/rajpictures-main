@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { getLocalGallery, type GalleryItem } from "@/lib/supabaseClient";
+import { getLocalGallery, getRemoteGallery, type GalleryItem } from "@/lib/supabaseClient";
 import { Image as ImageIcon, Maximize2, X } from "lucide-react";
 import { Seo } from "@/components/Seo";
 
@@ -19,10 +19,23 @@ export default function Gallery() {
   };
 
   useEffect(() => {
-    // Load gallery from local storage
-    const galleryItems = getLocalGallery();
-    setImages(galleryItems);
-    setLoading(false);
+    // Load gallery from local storage first
+    let galleryItems = getLocalGallery();
+    
+    // If localStorage is empty, fetch from JSON file (works on Vercel)
+    if (galleryItems.length === 0) {
+      getRemoteGallery().then(remoteItems => {
+        setImages(remoteItems);
+        // Cache it for future use
+        if (remoteItems.length > 0) {
+          localStorage.setItem("raj_pictures_gallery", JSON.stringify(remoteItems));
+        }
+        setLoading(false);
+      });
+    } else {
+      setImages(galleryItems);
+      setLoading(false);
+    }
   }, []);
 
   return (

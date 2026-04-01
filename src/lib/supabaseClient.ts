@@ -1,6 +1,6 @@
 // Local storage types (no database)
 
-export type GalleryCategory = "Weddings" | "Cinematic";
+export type GalleryCategory = "Weddings" | "Cinematic" | "Baby" | "Bridal" | "Pre-Wedding";
 
 export type GalleryItem = {
   id: number | string;
@@ -8,16 +8,34 @@ export type GalleryItem = {
   category: GalleryCategory | null;
   image_url: string;
   storage_path: string | null;
-  created_at: string;
+  created_at?: string;
 };
 
 // Local gallery storage management
 const GALLERY_STORAGE_KEY = "raj_pictures_gallery";
 
+// Fetch gallery from JSON file (works on Vercel)
+export async function getRemoteGallery(): Promise<GalleryItem[]> {
+  try {
+    const response = await fetch('/gallery-data.json');
+    if (!response.ok) throw new Error('Failed to fetch gallery');
+    const data = await response.json();
+    return data.gallery || [];
+  } catch (error) {
+    console.error('Failed to load gallery from JSON:', error);
+    return [];
+  }
+}
+
 export function getLocalGallery(): GalleryItem[] {
   try {
+    // Try to get from localStorage first (cached data)
     const stored = localStorage.getItem(GALLERY_STORAGE_KEY);
-    return stored ? JSON.parse(stored) : [];
+    if (stored) {
+      return JSON.parse(stored);
+    }
+    // If nothing in localStorage, return empty (will fetch remote instead)
+    return [];
   } catch {
     return [];
   }
